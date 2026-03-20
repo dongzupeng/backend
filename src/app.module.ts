@@ -12,11 +12,12 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: process.env.MYSQL_URL  || 'localhost',
-      port: parseInt(process.env.DB_PORT || '3306'),
-      username: process.env.DB_USERNAME || 'root',
-      password: process.env.DB_PASSWORD || '',
-      database: process.env.DB_DATABASE || 'wechat_official_account',
+      // host: process.env.MYSQL_URL  || 'localhost',
+      // port: parseInt(process.env.DB_PORT || '3306'),
+      // username: process.env.DB_USERNAME || 'root',
+      // password: process.env.DB_PASSWORD || '',
+      // database: process.env.DB_DATABASE || 'wechat_official_account',
+      url: process.env.MYSQL_URL || 'mysql://root:123456@localhost:3306/wechat_official_account',
       entities: [Article],
       synchronize: true,
     }),
