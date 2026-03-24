@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, UseGuards, Request } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards, Request, HttpCode, HttpStatus } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { LoginDto } from '../users/dto/login.dto';
@@ -22,5 +22,14 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt'))
   async getCurrentUser(@Request() req) {
     return req.user;
+  }
+
+  @Post('logout')
+  @UseGuards(AuthGuard('jwt'))
+  @HttpCode(HttpStatus.OK)
+  async logout(@Request() req) {
+    // 这里可以添加token黑名单逻辑
+    // 例如将token添加到redis黑名单中
+    return { message: '退出成功' };
   }
 }
