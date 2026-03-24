@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Article } from './article.entity';
+import { CreateArticleDto } from './dto/create-article.dto';
 
 @Injectable()
 export class ArticleService {
@@ -19,17 +20,20 @@ export class ArticleService {
     if (!article) {
       throw new NotFoundException(`Article with ID ${id} not found`);
     }
+    // 增加阅读量
+    article.views = (article.views || 0) + 1;
+    await this.articleRepository.save(article);
     return article;
   }
 
-  async create(article: Partial<Article>): Promise<Article> {
-    const newArticle = this.articleRepository.create(article);
+  async create(articleDto: CreateArticleDto): Promise<Article> {
+    const newArticle = this.articleRepository.create(articleDto);
     return this.articleRepository.save(newArticle);
   }
 
-  async update(id: number, article: Partial<Article>): Promise<Article> {
+  async update(id: number, articleDto: CreateArticleDto): Promise<Article> {
     const existingArticle = await this.findOne(id);
-    Object.assign(existingArticle, article);
+    Object.assign(existingArticle, articleDto);
     return this.articleRepository.save(existingArticle);
   }
 
