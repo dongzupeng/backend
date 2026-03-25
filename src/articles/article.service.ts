@@ -20,9 +20,6 @@ export class ArticleService {
     if (!article) {
       throw new NotFoundException(`Article with ID ${id} not found`);
     }
-    // 增加阅读量
-    article.views = (article.views || 0) + 1;
-    await this.articleRepository.save(article);
     return article;
   }
 
@@ -42,5 +39,14 @@ export class ArticleService {
     if (result.affected === 0) {
       throw new NotFoundException(`Article with ID ${id} not found`);
     }
+  }
+
+  async incrementViews(id: number): Promise<Article> {
+    const article = await this.articleRepository.findOne({ where: { id } });
+    if (!article) {
+      throw new NotFoundException(`Article with ID ${id} not found`);
+    }
+    article.views = (article.views || 0) + 1;
+    return this.articleRepository.save(article);
   }
 }

@@ -27,6 +27,11 @@ export class ArticleController {
     return this.articleService.update(id, articleDto);
   }
 
+  @Post(':id/views')
+  async incrementViews(@Param('id') id: number): Promise<Article> {
+    return this.articleService.incrementViews(id);
+  }
+
   @Delete(':id')
   async delete(@Param('id') id: number): Promise<void> {
     return this.articleService.delete(id);
