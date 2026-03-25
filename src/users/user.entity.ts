@@ -14,6 +14,12 @@ export class User {
   @Column({ unique: true, nullable: false })
   email: string;
 
+  @Column({ nullable: true, type: 'longtext' })
+  avatar: string;
+
+  @Column({ nullable: true, type: 'longtext' })
+  bio: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

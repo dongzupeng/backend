@@ -17,6 +17,9 @@ async function bootstrap() {
   app.use(express.json({ limit: '50mb' }));
   app.use(express.urlencoded({ limit: '50mb', extended: true }));
   
+  // 添加全局路由前缀
+  app.setGlobalPrefix('api');
+  
   await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap();

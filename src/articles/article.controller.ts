@@ -3,7 +3,7 @@ import { ArticleService } from './article.service';
 import { Article } from './article.entity';
 import { CreateArticleDto } from './dto/create-article.dto';
 
-@Controller('api/articles')
+@Controller('articles')
 export class ArticleController {
   constructor(private articleService: ArticleService) {}
 

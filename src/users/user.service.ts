@@ -47,4 +47,28 @@ export class UserService {
   async validatePassword(user: User, password: string): Promise<boolean> {
     return bcrypt.compare(password, user.password);
   }
+
+  async updateUser(id: number, updateData: Partial<User>): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    // 检查用户名是否已被其他用户使用
+    if (updateData.username && updateData.username !== user.username) {
+      const existingUser = await this.userRepository.findOne({ where: { username: updateData.username } });
+      if (existingUser) {
+        throw new Error('Username already exists');
+      }
+    }
+
+    // 更新用户数据
+    Object.assign(user, updateData);
+    return this.userRepository.save(user);
+  }
+
+  // 为了兼容前端的调用
+  async updateUserInfo(id: number, updateData: Partial<User>): Promise<User> {
+    return this.updateUser(id, updateData);
+  }
 }

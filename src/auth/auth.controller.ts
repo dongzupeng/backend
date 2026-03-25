@@ -1,10 +1,9 @@
-import { Controller, Post, Body, Get, UseGuards, Request, HttpCode, HttpStatus } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Controller, Post, Body, Request, HttpCode, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from '../users/dto/login.dto';
 import { RegisterDto } from '../users/dto/register.dto';
 
-@Controller('api/auth')
+@Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
@@ -18,14 +17,7 @@ export class AuthController {
     return this.authService.register(registerDto.username, registerDto.password, registerDto.email);
   }
 
-  @Get('me')
-  @UseGuards(AuthGuard('jwt'))
-  async getCurrentUser(@Request() req) {
-    return req.user;
-  }
-
   @Post('logout')
-  @UseGuards(AuthGuard('jwt'))
   @HttpCode(HttpStatus.OK)
   async logout(@Request() req) {
     // 这里可以添加token黑名单逻辑
