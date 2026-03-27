@@ -23,6 +23,12 @@ export class Article {
   @Column({ default: 0 })
   views: number;
 
+  @Column({ default: 0 })
+  likes: number;
+
+  @Column({ default: 0 })
+  favorites: number;
+
   @CreateDateColumn()
   createdAt: Date;
 

@@ -32,6 +32,18 @@ export class ArticleController {
     return this.articleService.incrementViews(id);
   }
 
+  @Post(':id/likes')
+  async toggleLikes(@Param('id') id: number, @Body() body: { isLiked: boolean }): Promise<Article> {
+    const result = await this.articleService.toggleLikes(id, body.isLiked);
+    return result;
+  }
+
+  @Post(':id/favorites')
+  async toggleFavorites(@Param('id') id: number, @Body() body: { isFavorited: boolean }): Promise<Article> {
+    const result = await this.articleService.toggleFavorites(id, body.isFavorited);
+    return result;
+  }
+
   @Delete(':id')
   async delete(@Param('id') id: number): Promise<void> {
     return this.articleService.delete(id);
