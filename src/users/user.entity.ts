@@ -1,4 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { Like } from '../likes/like.entity';
+import { Favorite } from '../favorites/favorite.entity';
+import { History } from '../history/history.entity';
 
 @Entity()
 export class User {
@@ -25,4 +28,13 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => Like, like => like.user)
+  likes: Like[];
+
+  @OneToMany(() => Favorite, favorite => favorite.user)
+  favorites: Favorite[];
+
+  @OneToMany(() => History, history => history.user)
+  history: History[];
 }

@@ -14,6 +14,7 @@ import { JwtAuthGuard } from './jwt-auth.guard';
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'your-secret-key',
+      // 过期时间为60分钟
       signOptions: { expiresIn: '60m' },
     }),
   ],

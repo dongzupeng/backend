@@ -5,6 +5,9 @@ import { AppService } from './app.service';
 import { ArticlesModule } from './articles/articles.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { LikesModule } from './likes/likes.module';
+import { FavoritesModule } from './favorites/favorites.module';
+import { HistoryModule } from './history/history.module';
 import { CorsMiddleware } from './middleware/cors.middleware';
 import { LoggerMiddleware } from './middleware/logger.middleware';
 
@@ -19,6 +22,9 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
     ArticlesModule,
     UsersModule,
     AuthModule,
+    LikesModule,
+    FavoritesModule,
+    HistoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
