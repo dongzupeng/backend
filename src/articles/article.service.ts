@@ -81,4 +81,20 @@ export class ArticleService {
     const saved = await this.articleRepository.save(article);
     return saved;
   }
+
+  // 获取热门文章（按阅读量排序）
+  async getPopularArticles(limit: number = 5): Promise<Article[]> {
+    return this.articleRepository.find({
+      order: { views: 'DESC' },
+      take: limit,
+    });
+  }
+
+  // 获取推荐文章（按创建时间排序）
+  async getRecommendedArticles(limit: number = 6): Promise<Article[]> {
+    return this.articleRepository.find({
+      order: { createdAt: 'DESC' },
+      take: limit,
+    });
+  }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, Query } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { Article } from './article.entity';
 import { CreateArticleDto } from './dto/create-article.dto';
@@ -10,6 +10,16 @@ export class ArticleController {
   @Get()
   async findAll(): Promise<Article[]> {
     return this.articleService.findAll();
+  }
+
+  @Get('popular')
+  async getPopularArticles(@Query('limit') limit: number = 5): Promise<Article[]> {
+    return this.articleService.getPopularArticles(limit);
+  }
+
+  @Get('recommended')
+  async getRecommendedArticles(@Query('limit') limit: number = 6): Promise<Article[]> {
+    return this.articleService.getRecommendedArticles(limit);
   }
 
   @Get(':id')
