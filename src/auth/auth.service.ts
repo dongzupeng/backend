@@ -11,9 +11,20 @@ export class AuthService {
   ) {}
 
   async login(username: string, password: string): Promise<{ access_token: string; user: User }> {
-    const user = await this.userService.findOneByUsername(username);
-    if (!user) {
-      throw new UnauthorizedException('用户名不存在');
+    // 检查输入是否是邮箱格式
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(username);
+    
+    let user;
+    if (isEmail) {
+      user = await this.userService.findOneByEmail(username);
+      if (!user) {
+        throw new UnauthorizedException('邮箱不存在');
+      }
+    } else {
+      user = await this.userService.findOneByUsername(username);
+      if (!user) {
+        throw new UnauthorizedException('用户名不存在');
+      }
     }
 
     const isPasswordValid = await this.userService.validatePassword(user, password);

@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
+import { Article } from '../articles/article.entity';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -9,6 +10,8 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    @InjectRepository(Article)
+    private articleRepository: Repository<Article>,
   ) {}
 
   async create(username: string, password: string, email: string): Promise<User> {
@@ -40,6 +43,10 @@ export class UserService {
     return this.userRepository.findOne({ where: { username } });
   }
 
+  async findOneByEmail(email: string): Promise<User | null> {
+    return this.userRepository.findOne({ where: { email } });
+  }
+
   async findOneById(id: number): Promise<User | null> {
     return this.userRepository.findOne({ where: { id } });
   }
@@ -62,9 +69,31 @@ export class UserService {
       }
     }
 
+    // 检查邮箱是否已被其他用户使用
+    if (updateData.email && updateData.email !== user.email) {
+      const existingEmail = await this.userRepository.findOne({ where: { email: updateData.email } });
+      if (existingEmail) {
+        throw new Error(`邮箱 ${updateData.email} 已存在`);
+      }
+    }
+
+    // 保存旧用户名
+    const oldUsername = user.username;
+
     // 更新用户数据
     Object.assign(user, updateData);
-    return this.userRepository.save(user);
+    const updatedUser = await this.userRepository.save(user);
+
+    // 如果用户名发生了变化，更新所有关联的文章
+    if (updateData.username && updateData.username !== oldUsername) {
+      // 更新该用户的所有文章的作者字段
+      await this.articleRepository.update(
+        { author: oldUsername },
+        { author: updateData.username }
+      );
+    }
+
+    return updatedUser;
   }
 
   // 为了兼容前端的调用
