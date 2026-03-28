@@ -6,12 +6,16 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import * as express from 'express';
+import { HttpExceptionFilter } from './filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
   // 启用全局验证管道
   app.useGlobalPipes(new ValidationPipe());
+  
+  // 注册全局异常过滤器
+  app.useGlobalFilters(new HttpExceptionFilter());
   
   // 增加请求体大小限制，支持大文件上传
   app.use(express.json({ limit: '50mb' }));

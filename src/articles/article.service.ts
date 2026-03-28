@@ -18,7 +18,7 @@ export class ArticleService {
   async findOne(id: number): Promise<Article> {
     const article = await this.articleRepository.findOne({ where: { id } });
     if (!article) {
-      throw new NotFoundException(`Article with ID ${id} not found`);
+      throw new NotFoundException(`文章 ${id} 不存在`);
     }
     return article;
   }
@@ -37,14 +37,14 @@ export class ArticleService {
   async delete(id: number): Promise<void> {
     const result = await this.articleRepository.delete(id);
     if (result.affected === 0) {
-      throw new NotFoundException(`Article with ID ${id} not found`);
+      throw new NotFoundException(`文章 ${id} 不存在`);
     }
   }
 
   async incrementViews(id: number): Promise<Article> {
     const article = await this.articleRepository.findOne({ where: { id } });
     if (!article) {
-      throw new NotFoundException(`Article with ID ${id} not found`);
+      throw new NotFoundException(`文章 ${id} 不存在`);
     }
     article.views = (article.views || 0) + 1;
     return this.articleRepository.save(article);
@@ -53,7 +53,7 @@ export class ArticleService {
   async toggleLikes(id: number, isLiked: boolean): Promise<Article> {
     const article = await this.articleRepository.findOne({ where: { id } });
     if (!article) {
-      throw new NotFoundException(`Article with ID ${id} not found`);
+      throw new NotFoundException(`文章 ${id} 不存在`);
     }
     if (isLiked === true) {
       // 取消点赞
@@ -69,7 +69,7 @@ export class ArticleService {
   async toggleFavorites(id: number, isFavorited: boolean): Promise<Article> {
     const article = await this.articleRepository.findOne({ where: { id } });
     if (!article) {
-      throw new NotFoundException(`Article with ID ${id} not found`);
+      throw new NotFoundException(`文章 ${id} 不存在`);
     }
     if (isFavorited === true) {
       // 取消收藏

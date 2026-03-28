@@ -16,7 +16,7 @@ export class HistoryService {
     // 检查文章是否存在
     const article = await this.articleRepository.findOne({ where: { id: articleId } });
     if (!article) {
-      throw new NotFoundException(`Article with ID ${articleId} not found`);
+      throw new NotFoundException(`文章 ${articleId} 不存在`);
     }
 
     // 检查是否已经存在浏览记录

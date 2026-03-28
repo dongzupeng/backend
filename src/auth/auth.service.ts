@@ -13,12 +13,12 @@ export class AuthService {
   async login(username: string, password: string): Promise<{ access_token: string; user: User }> {
     const user = await this.userService.findOneByUsername(username);
     if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException('用户名不存在');
     }
 
     const isPasswordValid = await this.userService.validatePassword(user, password);
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException('密码错误');
     }
 
     const payload = { username: user.username, sub: user.id };

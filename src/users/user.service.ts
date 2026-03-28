@@ -15,13 +15,13 @@ export class UserService {
     // 检查用户名是否已存在
     const existingUser = await this.userRepository.findOne({ where: { username } });
     if (existingUser) {
-      throw new Error('Username already exists');
+      throw new Error(`用户名 ${username} 已存在`);
     }
 
     // 检查邮箱是否已存在
     const existingEmail = await this.userRepository.findOne({ where: { email } });
     if (existingEmail) {
-      throw new Error('Email already exists');
+      throw new Error(`邮箱 ${email} 已存在`);
     }
 
     // 哈希密码
@@ -51,14 +51,14 @@ export class UserService {
   async updateUser(id: number, updateData: Partial<User>): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException(`用户 ${id} 不存在`);
     }
 
     // 检查用户名是否已被其他用户使用
     if (updateData.username && updateData.username !== user.username) {
       const existingUser = await this.userRepository.findOne({ where: { username: updateData.username } });
       if (existingUser) {
-        throw new Error('Username already exists');
+        throw new Error(`用户名 ${updateData.username} 已存在`);
       }
     }
 
