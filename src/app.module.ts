@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { LikesModule } from './likes/likes.module';
 import { FavoritesModule } from './favorites/favorites.module';
 import { HistoryModule } from './history/history.module';
+import { DraftsModule } from './drafts/drafts.module';
 import { CorsMiddleware } from './middleware/cors.middleware';
 import { LoggerMiddleware } from './middleware/logger.middleware';
 
@@ -25,6 +26,7 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
     LikesModule,
     FavoritesModule,
     HistoryModule,
+    DraftsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

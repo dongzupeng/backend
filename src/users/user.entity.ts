@@ -2,6 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 import { Like } from '../likes/like.entity';
 import { Favorite } from '../favorites/favorite.entity';
 import { History } from '../history/history.entity';
+import { Draft } from '../drafts/draft.entity';
 
 @Entity()
 export class User {
@@ -37,4 +38,7 @@ export class User {
 
   @OneToMany(() => History, history => history.user)
   history: History[];
+
+  @OneToMany(() => Draft, draft => draft.user)
+  drafts: Draft[];
 }
